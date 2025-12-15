@@ -6,9 +6,8 @@ Note that it does not contain any preconfigured dotfiles beyond those that are s
 curl -fsSL https://install.danklinux.com | sh
 ```
 
-You can also switch to the dank login manager, dms-greeter, by running the following command (see [setup docs](https://danklinux.com/docs/dankgreeter/installation#completing-setup) for more information):
+To enable dms's search functionality, run the following command (but not as root):
 
 ```shell
-dms greeter enable
-dms greeter sync    # to sync with your current theme
+systemctl --user enable --now dsearch
 ```
