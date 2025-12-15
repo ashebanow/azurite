@@ -21,27 +21,25 @@ done
 
 NIRI_PKGS=(
     dms
-    dms-greeter
 	niri
 	cava
 	cliphist
 	dgop
 	dsearch
 	gnome-keyring
-	greetd
 	matugen
-	qt6-multimeda
 	wl-clipboard
 	xdg-desktop-portal-gtk
 	xwayland-satellite
 )
 
-# Note that these fedora font packages are preinstalled in the
-# bluefin-dx image, along with the SymbolsNerdFont which doesn't
+# Note that many font packages are preinstalled in the
+# bazzite image, along with the SymbolsNerdFont which doesn't
 # have an associated fedora package:
 #
-#   adobe-source-code-pro-fonts
+#   fira-code-fonts
 #   google-droid-sans-fonts
+#   google-noto-emoji-fonts
 #   google-noto-sans-cjk-fonts
 #   google-noto-color-emoji-fonts
 #   jetbrains-mono-fonts
@@ -49,9 +47,8 @@ NIRI_PKGS=(
 # Because the nerd font symbols are mapped correctly, we can get
 # nerd font characters anywhere.
 FONTS=(
-	fira-code-fonts
+    adobe-source-code-pro-fonts
 	fontawesome-fonts-all
-	google-noto-emoji-fonts
 )
 
 # chrome etc are installed as flatpaks. We generally prefer that
@@ -84,8 +81,3 @@ log "Disable Copr repos to get rid of clutter..."
 for repo in "${COPR_REPOS[@]}"; do
 	dnf5 -y copr disable "$repo"
 done
-
-#######################################################################
-
-log "Enable DMS greeter..."
-dms greeter enable
