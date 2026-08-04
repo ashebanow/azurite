@@ -1,3 +1,5 @@
+# THIS PROJECT IS ARCHIVED. No further updates will occur. Sorry to archive this, but Dank (DMS) is now explicitly unsupported on immutable systems. And no one starred it, there are few downloads, etc, so hopefully no one is impacted. Feel free to fork and make your own.
+
 Azurite is a custom image of bazzite using the Niri/DankMaterialShell combo. There is **NO NVIDIA BULD** yet.
 
 Note that it does not contain any preconfigured dotfiles beyond those that are set up by the base bazzite image. That in turn means that neither niri nor dms are configured by default. To set up a good set of defaults, run the dms setup script as shown below. All the software needed by the base config is preinstalled, so it should be work without any additional installs (which would fail since we're on an atomic linux).
