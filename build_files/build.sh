@@ -142,3 +142,23 @@ for repo in "${COPR_REPOS[@]}"; do
 		log "Warning: Failed to disable COPR repo $repo"
 	fi
 done
+
+#######################################################################
+### The base image's repo files (Terra, and Fedora too) reference
+### file:// gpg keys that bootc-image-builder's depsolve can't read
+### (osbuild/bootc-image-builder#1188), which breaks anaconda-iso builds.
+### Disable gpg checking on any repo with a local key so BIB can depsolve
+### the image. Packages are still verified while the image is being built;
+### this only affects manual dnf layering on the installed system (same
+### approach as otonm/bazzite-custom#16).
+
+log "Fix file:// gpg keys so BIB ISO builds can depsolve..."
+for repo in /etc/yum.repos.d/*.repo; do
+	if grep -q 'gpgkey=file://' "$repo"; then
+		sed -i \
+			-e 's|^gpgkey=file://|#gpgkey=file://|' \
+			-e 's|^gpgcheck=1|gpgcheck=0|' \
+			-e 's|^repo_gpgcheck=1|repo_gpgcheck=0|' \
+			"$repo"
+	fi
+done
