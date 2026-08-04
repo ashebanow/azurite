@@ -3,3 +3,4 @@ cosign.key
 _build_*
 output
 _build-*/**
+*_chunkah_*

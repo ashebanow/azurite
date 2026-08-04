@@ -35,6 +35,9 @@ Note that alacritty, kitty, AND ghostty are all preinstalled. The basic dms conf
 (`just build`, `just build-iso`, `just build-qcow2`) still work too; the script
 just adds the preflight checks and the cross-arch handling.
 
+Image name, description, tags and the BIB image are configured in
+[`azurite.env`](./azurite.env), which the `just` recipes load.
+
 **There is no aarch64 build, and there cannot be one right now:** azurite is
 derived from `ghcr.io/ublue-os/bazzite`, which is published for amd64 only. On
 Apple Silicon the script builds `linux/amd64` under emulation inside the podman
