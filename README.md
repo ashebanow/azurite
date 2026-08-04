@@ -3,7 +3,7 @@ Azurite is a custom image of bazzite using the Niri/DankMaterialShell combo. The
 Note that it does not contain any preconfigured dotfiles beyond those that are set up by the base bazzite image. That in turn means that neither niri nor dms are configured by default. To set up a good set of defaults, run the dms setup script as shown below. All the software needed by the base config is preinstalled, so it should be work without any additional installs (which would fail since we're on an atomic linux).
 
 ```shell
-curl -fsSL https://install.danklinux.com | sh
+dms setup
 ```
 
 You also **MUST** run the following command to get systemd to init everything properly:
