@@ -1,8 +1,11 @@
 # HANDOFF — azurite status & next steps
 
-Date: 2026-08-04. Everything below is on the `merge-upstream` branch (pushed to
-`origin/merge-upstream`). **`main` has NOT been force-pushed** (deliberately
-parked — see "Pending decisions").
+Date: 2026-08-04. The `merge-upstream` branch (pushed to
+`origin/merge-upstream`) has been merged into `main`:
+`git push --force-with-lease origin main` updated `main` from `45165de` to the
+merge-upstream tip `3a8454f` (histories were disjoint — this was the planned
+force-update). Old `main` tip preserved locally as tag
+`backup/main-before-merge-upstream`.
 
 ## The big picture (what got done)
 
@@ -118,10 +121,10 @@ or wire it into `vm-lumquat.sh`. The backups above are the safety net until then
 
 ## Pending decisions / follow-ups
 
-- [ ] **Force-push `main`** to `merge-upstream` tip
-      (`git push --force-with-lease origin merge-upstream:main`) — needs
-      explicit user OK. This makes `main` carry the merge + fixes and lights up
-      CI (build-disk.yml on x86_64 runners).
+- [x] **Force-push `main`** to `merge-upstream` tip
+      (`git push --force-with-lease origin main`; done 2026-08-04, now `3a8454f`).
+      `main` carries the merge + fixes and CI (build-disk.yml on x86_64 runners)
+      is now live. Old tip saved as `backup/main-before-merge-upstream` (local).
 - [ ] README cleanup: drop the `curl -fsSL https://install.danklinux.com | sh`
       step (dms ships in the image); document the dms policy override.
 - [ ] PR candidates upstream (`ublue-os/image-template`): gpgkey depsolve fix,
