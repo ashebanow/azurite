@@ -162,3 +162,23 @@ for repo in /etc/yum.repos.d/*.repo; do
 			"$repo"
 	fi
 done
+
+#######################################################################
+### dms 1.5+ ships a compiled-in policy that blocks `dms setup` on
+### immutable/image-based systems (it does a privileged usermod for the
+### input group). azurite is image-based by design and its documented
+### workflow relies on `dms setup`, so override the policy to re-enable
+### setup while keeping the greeter commands blocked.
+
+log "Re-enable dms setup (immutable-system policy override)..."
+mkdir -p /etc/dms
+cat > /etc/dms/cli-policy.json <<'EOF'
+{
+  "policy_version": 1,
+  "blocked_commands": [
+    "greeter install",
+    "greeter enable",
+    "greeter uninstall"
+  ]
+}
+EOF
