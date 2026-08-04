@@ -35,10 +35,12 @@ ssh_lumquat() {
 }
 
 if [[ "${1:-}" == "--stop" ]]; then
-	ids="$(ssh_lumquat 'sudo podman ps -q --filter ancestor=docker.io/qemux/qemu 2>/dev/null')"
+	# the VM container runs rootless (the _run-vm recipe runs plain
+	# `podman run`), so query rootless podman — `sudo podman` won't see it
+	ids="$(ssh_lumquat 'podman ps -q --filter ancestor=docker.io/qemux/qemu 2>/dev/null')"
 	if [[ -n "$ids" ]]; then
 		echo "Stopping VM container(s) on ${HOST}: $ids"
-		ssh_lumquat 'for c in $(sudo podman ps -q --filter ancestor=docker.io/qemux/qemu); do sudo podman rm -f "$c"; done'
+		ssh_lumquat 'for c in $(podman ps -q --filter ancestor=docker.io/qemux/qemu); do podman rm -f "$c"; done'
 	else
 		echo "No VM running on ${HOST}."
 	fi
