@@ -22,13 +22,13 @@ parked — see "Pending decisions").
 
 ## Branch contents (`merge-upstream`, 5 commits on top of the merge)
 
-| Commit | What |
-|---|---|
-| `fix: re-enable dms setup...` | ships `/etc/dms/cli-policy.json` override — dms 1.5+ blocks `dms setup` on immutable systems; azurite re-enables it (greeter commands stay blocked) |
-| `fix: rootful image ID comparison...` | unquoted podman `--format` template in `_rootful_load_image` (the `'{{.ID}}'` quoting bug) |
-| `fix: make _run-vm recipe work on macOS...` | `_run-vm` portability: `open` vs `xdg-open`, `lsof` vs `ss`, conditional `/dev/kvm` |
+| Commit                                                     | What                                                                                                                                                                                                         |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fix: re-enable dms setup...`                              | ships `/etc/dms/cli-policy.json` override — dms 1.5+ blocks `dms setup` on immutable systems; azurite re-enables it (greeter commands stay blocked)                                                          |
+| `fix: rootful image ID comparison...`                      | unquoted podman `--format` template in `_rootful_load_image` (the `'{{.ID}}'` quoting bug)                                                                                                                   |
+| `fix: make _run-vm recipe work on macOS...`                | `_run-vm` portability: `open` vs `xdg-open`, `lsof` vs `ss`, conditional `/dev/kvm`                                                                                                                          |
 | `fix: make BIB ISO depsolve work despite file:// gpg keys` | **essential**: bazzite's repo files use `file://` gpgkeys that break BIB depsolve everywhere (osbuild/bootc-image-builder#1188); build.sh disables gpgcheck on those repos (matches otonm/bazzite-custom#16) |
-| `feat: add vm-lumquat.sh...` | helper: run the VM on lumquat (KVM) + SSH-tunnel noVNC to the Mac over Tailscale |
+| `feat: add vm-lumquat.sh...`                               | helper: run the VM on lumquat (KVM) + SSH-tunnel noVNC to the Mac over Tailscale                                                                                                                             |
 
 All three `fix:` commits are good candidates for PRs back to
 `ublue-os/image-template` (they fix real bugs, platform-independent).
@@ -46,7 +46,7 @@ screen stays frozen on SDDM's last frame.
 - The failure is **no usable DRM device for niri**:
   - `niri::backend::tty: error doing early import: Error::DeviceMissing`
   - later: `adding device: "/dev/dri/card1" ... error adding device: Failed to
-    open device: Invalid argument (os error 22)` → `pausing session`
+open device: Invalid argument (os error 22)` → `pausing session`
 - **virtio-gpu is flaky in this VM**: initialized cleanly on 1 of 3 boots
   (`[drm] Initialized virtio_gpu ... on minor 1` present only on the first
   boot). On failing boots there are NO virtio-gpu kernel lines at all.
@@ -132,3 +132,4 @@ or wire it into `vm-lumquat.sh`. The backups above are the safety net until then
       experience (niri + DMS + dsearch).
 - [ ] Consider `bootc switch`/`bootc upgrade` as the guest's update path
       (kickstart already points at `ghcr.io/ashebanow/azurite:latest`).
+- [ ] Switch lumquat from using ssh tunnels to using 'tailscale serve'?
