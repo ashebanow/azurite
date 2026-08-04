@@ -390,9 +390,14 @@ _run-vm $target_image $tag $type $config:
         just "build-${type}" "$target_image" "$tag"
     fi
 
-    # Determine an available port to use
+    # Determine an available port to use (ss on Linux, lsof on macOS)
     port=8006
-    while grep -q :${port} <<< $(ss -tunalp); do
+    while true; do
+        if [[ "$(uname -s)" == "Darwin" ]]; then
+            lsof -nP -iTCP:"${port}" -sTCP:LISTEN >/dev/null 2>&1 || break
+        else
+            grep -q ":${port} " <<< "$(ss -tunalp)" || break
+        fi
         port=$(( port + 1 ))
     done
     echo "Using Port: ${port}"
@@ -408,12 +413,19 @@ _run-vm $target_image $tag $type $config:
     run_args+=(--env "DISK_SIZE=64G")
     run_args+=(--env "TPM=Y")
     run_args+=(--env "GPU=Y")
-    run_args+=(--device=/dev/kvm)
+    # Only pass through KVM when available (no /dev/kvm on a macOS podman machine)
+    if [[ -e /dev/kvm ]]; then
+        run_args+=(--device=/dev/kvm)
+    fi
     run_args+=(--volume "${PWD}/${image_file}":"/boot.${type}")
     run_args+=(docker.io/qemux/qemu)
 
-    # Run the VM and open the browser to connect
-    (sleep 30 && xdg-open http://localhost:"$port") &
+    # Run the VM and open the browser to connect (xdg-open on Linux, open on macOS)
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        (sleep 30 && open "http://localhost:${port}") &
+    else
+        (sleep 30 && xdg-open "http://localhost:${port}" >/dev/null 2>&1) &
+    fi
     podman run "${run_args[@]}"
 
 # Run a virtual machine from a QCOW2 image
